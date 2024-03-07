@@ -1,7 +1,7 @@
 ﻿using Tabuleiro;
 using Tabuleiro.Enum;
 
-namespace Xadrez.Xadrez
+namespace Xadrez.Xadrez.Componentes
 {
     public class Torre : Peca
     {

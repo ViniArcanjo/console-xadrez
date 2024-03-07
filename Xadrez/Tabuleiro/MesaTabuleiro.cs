@@ -7,7 +7,7 @@ namespace Tabuleiro
     {
         public int Linhas { get; set; }
         public int Colunas { get; set; }
-        private Peca[,] _pecas;
+        private Peca?[,] _pecas;
 
         public MesaTabuleiro(int linhas, int colunas)
         {
@@ -27,6 +27,18 @@ namespace Tabuleiro
 
             _pecas[posicao.Linha, posicao.Coluna] = peca;
             peca.Posicao = posicao;
+        }
+
+        public Peca TirarPeca(Posicao posicao)
+        {
+            ValidarPosicao(posicao);
+
+            var peca = GetPeca(posicao);
+
+            peca.Posicao = null;
+            _pecas[posicao.Linha, posicao.Coluna] = null;
+
+            return peca;
         }
 
         #region Private
