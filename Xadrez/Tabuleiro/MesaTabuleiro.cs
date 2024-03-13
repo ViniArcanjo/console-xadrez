@@ -23,7 +23,7 @@ namespace Tabuleiro
 
         public void ColocarPeca(Peca peca, Posicao posicao)
         {
-            ValidarPosicao(posicao);
+            ValidarAto(posicao);
 
             _pecas[posicao.Linha, posicao.Coluna] = peca;
             peca.Posicao = posicao;
@@ -31,9 +31,14 @@ namespace Tabuleiro
 
         public Peca TirarPeca(Posicao posicao)
         {
-            ValidarPosicao(posicao);
+            ValidarAto(posicao);
 
             var peca = GetPeca(posicao);
+
+            if (peca == null)
+            {
+                throw new TabuleiroException(ErrorMessage.SemPecaNaPosicao);
+            }
 
             peca.Posicao = null;
             _pecas[posicao.Linha, posicao.Coluna] = null;
@@ -41,24 +46,22 @@ namespace Tabuleiro
             return peca;
         }
 
-        #region Private
-        private void ValidarPosicao(Posicao posicao)
+        public bool IsPosicaoValida(Posicao posicao)
+        {
+            return posicao.Linha >= 0 && posicao.Linha < Linhas && posicao.Coluna >= 0 && posicao.Coluna < Colunas;
+        }
+
+        public void ValidarAto(Posicao posicao)
         {
             if (!IsPosicaoValida(posicao))
             {
                 throw new TabuleiroException(ErrorMessage.PosicaoInvalida);
             }
 
-            if (GetPeca(posicao) != null)
-            {
-                throw new TabuleiroException(ErrorMessage.PosicaoOcupada);
-            }
+            //if (GetPeca(posicao) != null)
+            //{
+            //    throw new TabuleiroException(ErrorMessage.PosicaoOcupada);
+            //}
         }
-
-        private bool IsPosicaoValida(Posicao posicao)
-        {
-            return posicao.Linha >= 0 && posicao.Linha < Linhas && posicao.Coluna >= 0 && posicao.Coluna < Colunas;
-        }
-        #endregion
     }
 }

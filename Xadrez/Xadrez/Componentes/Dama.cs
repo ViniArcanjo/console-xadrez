@@ -11,5 +11,10 @@ namespace Xadrez.Xadrez.Componentes
         {
             return "D";
         }
+
+        public override bool[,] PosicoesValidas()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

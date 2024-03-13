@@ -9,13 +9,27 @@ namespace Xadrez.Xadrez
         public MesaTabuleiro Tabuleiro { get; private set; }
         private int _turno;
         private Cor _jogadorAtual;
+        public bool Terminada { get; private set; }
 
         public PartidaXadrez()
         {
             Tabuleiro = new MesaTabuleiro(8, 8);
             _turno = 1;
             _jogadorAtual = Cor.Branca;
+            Terminada = false;
             IniciarTabuleiro();
+        }
+
+        public Posicao LerPosicao()
+        {
+            var posicao = Console.ReadLine();
+            var coluna = posicao[0];
+            var linha = int.Parse(posicao[1].ToString());
+
+            var resposta = new PosicaoXadrez(coluna, linha).ParaPosicao();
+            Tabuleiro.ValidarAto(resposta);
+
+            return resposta;
         }
 
         public void ExecutarMovimento(Posicao origem, Posicao destino)
@@ -32,6 +46,7 @@ namespace Xadrez.Xadrez
             Tabuleiro.ColocarPeca(pecaMovida, destino);
         }
 
+        #region Inicialização
         private void IniciarTabuleiro()
         {
             for (var l = 0; l < Tabuleiro.Linhas; l++)
@@ -79,5 +94,6 @@ namespace Xadrez.Xadrez
                     break;
             }
         }
+        #endregion
     }
 }

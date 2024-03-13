@@ -4,13 +4,13 @@ namespace Xadrez.Xadrez
 {
     public class PosicaoXadrez
     {
-        public char Coluna { get; set; }
         public int Linha { get; set; }
+        public char Coluna { get; set; }
 
         public PosicaoXadrez(char coluna, int linha)
         {
-            Coluna = coluna;
             Linha = linha;
+            Coluna = Char.ToLower(coluna);
         }
 
         public Posicao ParaPosicao()
