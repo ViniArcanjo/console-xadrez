@@ -1,5 +1,7 @@
 ﻿using Tabuleiro;
 using Tabuleiro.Enum;
+using Xadrez.Infra.Const;
+using Xadrez.Tabuleiro.Error;
 using Xadrez.Xadrez.Componentes;
 
 namespace Xadrez.Xadrez
@@ -7,15 +9,15 @@ namespace Xadrez.Xadrez
     public class PartidaXadrez
     {
         public MesaTabuleiro Tabuleiro { get; private set; }
-        private int _turno;
-        private Cor _jogadorAtual;
+        public int Turno { get; private set; }
+        public Cor JogadorAtual { get; private set; }
         public bool Terminada { get; private set; }
 
         public PartidaXadrez()
         {
             Tabuleiro = new MesaTabuleiro(8, 8);
-            _turno = 1;
-            _jogadorAtual = Cor.Branca;
+            Turno = 1;
+            JogadorAtual = Cor.Branca;
             Terminada = false;
             IniciarTabuleiro();
         }
@@ -26,13 +28,26 @@ namespace Xadrez.Xadrez
             var coluna = posicao[0];
             var linha = int.Parse(posicao[1].ToString());
 
-            var resposta = new PosicaoXadrez(coluna, linha).ParaPosicao();
-            Tabuleiro.ValidarAto(resposta);
+            var posicaoDaJogada = new PosicaoXadrez(coluna, linha).ParaPosicao();
 
-            return resposta;
+            if (!Tabuleiro.IsPosicaoValida(posicaoDaJogada))
+            {
+                throw new TabuleiroException(ErrorMessage.PosicaoInvalida);
+            }
+
+            return posicaoDaJogada;
         }
 
-        public void ExecutarMovimento(Posicao origem, Posicao destino)
+        public void RealizarJogada(Posicao origem, Posicao destino)
+        {
+            ExecutarMovimento(origem, destino);
+
+            TrocarJogador();
+
+            Turno++;
+        }
+
+        private void ExecutarMovimento(Posicao origem, Posicao destino)
         {
             var pecaMovida = Tabuleiro.TirarPeca(origem);
             pecaMovida.IncrementarMovimentos();
@@ -45,6 +60,42 @@ namespace Xadrez.Xadrez
 
             Tabuleiro.ColocarPeca(pecaMovida, destino);
         }
+
+        public void ChecarJogadaDeOrigem(Posicao origem)
+        {
+            var peca = Tabuleiro.GetPeca(origem);
+
+            if (peca is null)
+            {
+                throw new TabuleiroException(ErrorMessage.SemPecaNaPosicao);
+            }
+
+            if (JogadorAtual != peca.Cor)
+            {
+                throw new TabuleiroException(ErrorMessage.PecaInvalidaSelecionada);
+            }
+
+            if (!peca.TemPosicaoValida())
+            {
+                throw new TabuleiroException(ErrorMessage.SemJogadasPossíveis);
+            }
+        }
+
+        public void ChecarJogadaDeDestino(Posicao origem, Posicao destino)
+        {
+            var peca = Tabuleiro.GetPeca(origem);
+
+            if (!peca.PodeMoverPara(destino))
+            {
+                throw new TabuleiroException(ErrorMessage.MovimentoInvalido);
+            }
+        }
+
+        private void TrocarJogador()
+        {
+            JogadorAtual = JogadorAtual == Cor.Branca ? Cor.Preta : Cor.Preta;
+        }
+
 
         #region Inicialização
         private void IniciarTabuleiro()

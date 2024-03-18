@@ -21,7 +21,39 @@ namespace Xadrez
                 Console.WriteLine();
             }
 
-            Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine("  a b c d e f g h");
+        }
+
+        public static void ImprimirTabuleiro(MesaTabuleiro tabuleiro, bool[,] posicoesDeJogada)
+        {
+            var backupConsoleColor = Console.BackgroundColor;
+
+            for (int l = 0; l < tabuleiro.Linhas; l++)
+            {
+                Console.Write($"{8 - l} ");
+
+                for (int c = 0; c < tabuleiro.Colunas; c++)
+                {
+                    if (posicoesDeJogada[l, c])
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                    }
+                    else
+                    {
+                        Console.BackgroundColor = backupConsoleColor;
+                    }
+
+                    var peca = tabuleiro.GetPeca(new Posicao(l, c));
+
+                    ImprimirPeca(peca);
+                    Console.BackgroundColor = backupConsoleColor;
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.BackgroundColor = backupConsoleColor;
+            Console.WriteLine("  a b c d e f g h");
         }
 
         private static void ImprimirPeca(Peca peca)

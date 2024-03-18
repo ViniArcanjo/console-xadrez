@@ -25,7 +25,7 @@ namespace Xadrez.Xadrez.Componentes
             var posicaoParaChecar = new Posicao(0, 0);
 
             // Norte
-            posicaoParaChecar.MudarPosicao(Posicao.Linha--, Posicao.Coluna);
+            posicaoParaChecar.MudarPosicao(Posicao.Linha - 1, Posicao.Coluna);
             while (Tabuleiro.IsPosicaoValida(posicaoParaChecar) && PodeMover(posicaoParaChecar))
             {
                 resposta[posicaoParaChecar.Linha, posicaoParaChecar.Coluna] = true;
@@ -39,7 +39,7 @@ namespace Xadrez.Xadrez.Componentes
             }
 
             // Sul
-            posicaoParaChecar.MudarPosicao(Posicao.Linha++, Posicao.Coluna);
+            posicaoParaChecar.MudarPosicao(Posicao.Linha + 1, Posicao.Coluna);
             while (Tabuleiro.IsPosicaoValida(posicaoParaChecar) && PodeMover(posicaoParaChecar))
             {
                 resposta[posicaoParaChecar.Linha, posicaoParaChecar.Coluna] = true;
@@ -53,7 +53,7 @@ namespace Xadrez.Xadrez.Componentes
             }
 
             // Leste
-            posicaoParaChecar.MudarPosicao(Posicao.Linha, Posicao.Coluna++);
+            posicaoParaChecar.MudarPosicao(Posicao.Linha, Posicao.Coluna + 1);
             while (Tabuleiro.IsPosicaoValida(posicaoParaChecar) && PodeMover(posicaoParaChecar))
             {
                 resposta[posicaoParaChecar.Linha, posicaoParaChecar.Coluna] = true;
@@ -67,7 +67,7 @@ namespace Xadrez.Xadrez.Componentes
             }
 
             // Oeste
-            posicaoParaChecar.MudarPosicao(Posicao.Linha, Posicao.Coluna--);
+            posicaoParaChecar.MudarPosicao(Posicao.Linha, Posicao.Coluna - 1);
             while (Tabuleiro.IsPosicaoValida(posicaoParaChecar) && PodeMover(posicaoParaChecar))
             {
                 resposta[posicaoParaChecar.Linha, posicaoParaChecar.Coluna] = true;

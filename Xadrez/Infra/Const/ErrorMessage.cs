@@ -2,8 +2,11 @@
 {
     public static class ErrorMessage
     {
-        public static string PosicaoInvalida = "Ops! Parece que você tentou inserir uma peça em uma posição inválida.";
-        public static string PosicaoOcupada = "Ops! Parece que você tentou inserir uma peça em uma posição que já está ocupada.";
-        public static string SemPecaNaPosicao = "Ops! Parece que você selecionou uma posição para iniciar a jogada em que não há uma peça.";
+        public static string PosicaoInvalida = "Ops! Parece que você tentou selecionar uma posição inválida.";
+
+        public static string SemPecaNaPosicao = "Ops! Parece que você selecionou uma posição em que não há uma peça para iniciar a jogada.";
+        public static string SemJogadasPossíveis = "Ops! Parece que você selecionou uma peça que não possui um movimento possível.";
+        public static string PecaInvalidaSelecionada = "Ops! Parece que você selecionou uma peça que não é sua.";
+        public static string MovimentoInvalido = "Ops! Parece que você selecionou uma posição de destino inválida.";
     }
 }

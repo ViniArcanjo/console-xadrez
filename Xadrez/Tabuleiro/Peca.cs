@@ -15,11 +15,32 @@ namespace Tabuleiro
             Tabuleiro = tabuleiro;
         }
 
+        public abstract bool[,] PosicoesValidas();
+
         public void IncrementarMovimentos()
         {
             QtdMovimentos++;
         }
 
-        public abstract bool[,] PosicoesValidas();
+        public bool TemPosicaoValida()
+        {
+            var posicoesValidas = PosicoesValidas();
+
+            for (var l = 0; l < posicoesValidas.GetLength(0); l++)
+            {
+                for (var c = 0; c < posicoesValidas.GetLength(1); c++)
+                {
+                    if (posicoesValidas[l, c])
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool PodeMoverPara(Posicao posicao)
+        {
+            return PosicoesValidas()[posicao.Linha, posicao.Coluna];
+        }
     }
 }

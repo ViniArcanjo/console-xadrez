@@ -7,30 +7,62 @@ namespace Xadrez
     {
         static void Main(string[] args)
         {
-            try
+            var partida = new PartidaXadrez();
+
+            while (!partida.Terminada)
             {
-                var partida = new PartidaXadrez();
-
-                while (!partida.Terminada)
+                try
                 {
-                    Console.Clear();
-                    Tela.ImprimirTabuleiro(partida.Tabuleiro);
+                    ImprimirFormatação(partida);
 
-                    Console.WriteLine();
                     Console.Write("Origem: ");
                     var origem = partida.LerPosicao();
+                    partida.ChecarJogadaDeOrigem(origem);
+
+                    var posicoesDeJogada = partida.Tabuleiro.GetPeca(origem).PosicoesValidas();
+
+                    ImprimirFormatação(partida, posicoesDeJogada);
 
                     Console.Write("Destino: ");
                     var destino = partida.LerPosicao();
+                    partida.ChecarJogadaDeDestino(origem, destino);
 
-                    partida.ExecutarMovimento(origem, destino);
+                    partida.RealizarJogada(origem, destino);
+                }
+                catch (TabuleiroException e)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Pressione qualquer tecla para tentar novamente.");
+                    Console.ReadLine();
                 }
             }
-            catch (TabuleiroException e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-            }
+        }
+
+        private static void ImprimirFormatação(PartidaXadrez partida)
+        {
+            Console.Clear();
+            Tela.ImprimirTabuleiro(partida.Tabuleiro);
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Turno: {partida.Turno}");
+            Console.WriteLine($"Jogador atual: {partida.JogadorAtual}");
+
+            Console.WriteLine();
+        }
+
+        private static void ImprimirFormatação(PartidaXadrez partida, bool[,] posicoesDeJogada)
+        {
+            Console.Clear();
+            Tela.ImprimirTabuleiro(partida.Tabuleiro, posicoesDeJogada);
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Turno: {partida.Turno}");
+            Console.WriteLine($"Jogador atual: {partida.JogadorAtual}");
+
+            Console.WriteLine();
         }
     }
 }
