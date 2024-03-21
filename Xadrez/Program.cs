@@ -13,19 +13,19 @@ namespace Xadrez
             {
                 try
                 {
-                    ImprimirFormatação(partida);
+                    Tela.ImprimirPartida(partida);
 
                     Console.Write("Origem: ");
                     var origem = partida.LerPosicao();
-                    partida.ChecarJogadaDeOrigem(origem);
+                    partida.ChecarOrigem(origem);
 
                     var posicoesDeJogada = partida.Tabuleiro.GetPeca(origem).PosicoesValidas();
 
-                    ImprimirFormatação(partida, posicoesDeJogada);
-
+                    Tela.ImprimirPartida(partida, posicoesDeJogada);
+                    
                     Console.Write("Destino: ");
                     var destino = partida.LerPosicao();
-                    partida.ChecarJogadaDeDestino(origem, destino);
+                    partida.ChecarDestino(origem, destino);
 
                     partida.RealizarJogada(origem, destino);
                 }
@@ -33,23 +33,10 @@ namespace Xadrez
                 {
                     Console.WriteLine();
                     Console.WriteLine(e.Message);
-                    Console.WriteLine("Pressione qualquer tecla para tentar novamente.");
+                    Console.WriteLine("Pressione ENTER para tentar novamente.");
                     Console.ReadLine();
                 }
             }
-        }
-
-        private static void ImprimirFormatação(PartidaXadrez partida)
-        {
-            Console.Clear();
-            Tela.ImprimirTabuleiro(partida.Tabuleiro);
-
-            Console.WriteLine();
-
-            Console.WriteLine($"Turno: {partida.Turno}");
-            Console.WriteLine($"Jogador atual: {partida.JogadorAtual}");
-
-            Console.WriteLine();
         }
 
         private static void ImprimirFormatação(PartidaXadrez partida, bool[,] posicoesDeJogada)

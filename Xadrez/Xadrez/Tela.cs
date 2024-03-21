@@ -1,13 +1,49 @@
 ﻿using Tabuleiro;
 using Tabuleiro.Enum;
 
-namespace Xadrez
+namespace Xadrez.Xadrez
 {
     public class Tela
     {
+        public static void ImprimirPartida(PartidaXadrez partida)
+        {
+            Console.Clear();
+            ImprimirTabuleiro(partida.Tabuleiro);
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Turno: {partida.Turno}");
+            Console.WriteLine($"Jogador atual: {partida.JogadorAtual}");
+
+            Console.WriteLine();
+
+            ImprimirPecasCapturadas(partida);
+
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        public static void ImprimirPartida(PartidaXadrez partida, bool[,] posicoesDeJogada)
+        {
+            Console.Clear();
+            ImprimirTabuleiro(partida.Tabuleiro, posicoesDeJogada);
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Turno: {partida.Turno}");
+            Console.WriteLine($"Jogador atual: {partida.JogadorAtual}");
+
+            Console.WriteLine();
+
+            ImprimirPecasCapturadas(partida);
+
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
         public static void ImprimirTabuleiro(MesaTabuleiro tabuleiro)
         {
-            for (int l = 0; l < tabuleiro.Linhas;  l++)
+            for (int l = 0; l < tabuleiro.Linhas; l++)
             {
                 Console.Write($"{8 - l} ");
 
@@ -80,6 +116,35 @@ namespace Xadrez
 
                 Console.ForegroundColor = backupConsoleColor;
             }
+        }
+
+        private static void ImprimirPecasCapturadas(PartidaXadrez partida)
+        {
+            var backupConsoleColor = Console.ForegroundColor;
+            
+            Console.WriteLine("Peças Capturadas:");
+
+            Console.Write($"Brancas: ");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Branca));
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"Pretas: ");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Preta));
+            Console.ForegroundColor = backupConsoleColor;
+        }
+
+        private static void ImprimirConjunto(HashSet<Peca> pecas)
+        {
+            Console.Write("[ ");
+
+            foreach (var peca in pecas)
+            {
+                Console.Write($"{peca} ");
+            };
+
+            Console.Write("]");
         }
     }
 }
